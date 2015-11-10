@@ -18,8 +18,76 @@
 
    \maketitle
 
+
+
 \section{Problem 1.4}
+
+We will adapt the \emph{Gale-Shapley} algorithm to this problem. Consider the following algorithm
+
+\begin{enumerate}
+\item\label{g-s}Initially all hospitals and all students are free.\item While there is a free hospital who has not offered to every student, pick a free hospital.\begin{enumerate}
+\item The hospital offers to the first student in it's preference list it has not offered to yet.\item If the student has not agreed to work at a hospital yet he agrees automatically.
+\item If he is already working for another hospital, he chooses whichever hospital he has higher preference for.
+\begin{enumerate}
+\item If he likes the one he has agreed to work for already he stays with it, and the hospital asks the next most preferred candidate on its list.
+\item \label{swap} If he prefers the offering hospital, he switches to it. Mark the hospital he switched away from as free, and if the hospital he moved to now has its preferred number of students, mark it as not free.
+\end{enumerate}
+\end{enumerate}
+\end{enumerate}
+
+\emph{Proof:}To begin we prove a lemma
+
+\begin{lemma}\label{stayassigned} Once a student has been made an offer he is always assigned to precisely one hospital, and moreover he prefers whatever hospital he is assigned to at least as much as all other hospitals that have offered to him.
+\end{lemma}
+
+\begin{proof}
+The only time a student is offered is in \ref{swap}, and in this case he always chooses the hospital he prefers.
+\end{proof}
+
+Now I claim that this algorithm will always produce a stable assignment of students to hospitals
+
+\begin{proof} We show that there are no instabilities of the first type
+
+We proceed by induction:
+
+\emph{Base Case:} Clearly, when the algorithm starts there are no such instabilities as no students are yet assigned to hospitals.
+
+\emph{Inductive Hypothesis:} In any given assignment the algorithm will not create an instability of the first type.
+
+Since a hospital asks students in order of its preference and if a student is not yet assigned to a hospital he automatically accepts the offer the algorithm cannot create an instability of the first type.
+
+For, by Lemma \ref{stayassigned} once a student is assigned he stays assigned. Thus, when a hospital gains a new student it must be that each student which it prefers more is already assigned to a hospital.
+
+Now it remains to show that the algorithm does not produce matchings with instabilities of the second type. We'll use induction again
+
+\emph{Base Case:} Clearly, when the algorithm starts there are no such instabilities as no students are yet assigned to hospitals.
+
+\emph{Inductive Hypothesis:} In any given assignment the algorithm will not create an instability of the second type. If a student $s$ has been assigned to a hospital $h$ then the hospital $h$ has already offered to each student $s'$ which it prefers more than $s$. If $s'$ prefered $h$ to its current hospital $h'$ or is unassigned he would have accepted. After accepting, $h'$ can only improve his preference, and from then on, will prefer wherever he is working to $h$.
+
+Thus, again the algorithm can produce no such instabilities.
+\end{proof}
+
+Furthermore I claim that the algorithm always produces a perfect matching
+
+\begin{proof}
+Suppose towards a contradiction that the algorithm does not produce a perfect matching. In particular suppose that when the algorithm terminates there is a hospital, say $h$ which does not have as many students as it wants.
+
+$h$ must have made an offer to each student, otherwise the algorithm would not have ended, however by Lemma \ref{stayassigned} once a student has been made an offer he stays assigned.
+
+This is a contradiction since, by assumption the number of available spots is less than the number $n$ of students, and again by Lemma \ref{stayassigned} each student that $h$ made an offer to must be assigned to precisely one hospital.
+\end{proof}
+
+\emph{Complexity:} The algorithm runs in $O(n \cdot m)$ time as each hospital offers a position to each student only once.
+
 \section{Problem 2.3}
+
+\[f_2(n)=\sqrt{2 n}\]
+\[f_3(n)=n+10\]
+\[f_6(n)=n^2 \log{n}\]
+\[f_1(n)=n^{2.5}\]
+\[f_4(n)=10^n\]
+\[f_5(n)=100^n\]
+
 \section{Problem 2.7}
 \section{Problem 3.2}
 \section{Problem 3.9}
