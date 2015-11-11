@@ -25,4 +25,27 @@
 
 
 def stable_matching(hospital_rankings, hospital_capacities, student_rankings):
-    return [[0], [2]]
+	numh = len(hospital_rankings)
+	nums = len(student_rankings)
+	answer = [[] for i in range(numh)]
+	while sum(hospital_capacities)>0:
+		h = [hospital_capacities[i]>0 for i in range(numh)].index(True)
+		s = hospital_rankings[h][0]
+		if s not in [item for sublist in answer for item in sublist]:
+			answer[h].append(s)
+			hospital_rankings[h].remove(s)
+			hospital_capacities[h] = hospital_capacities[h]-1
+		else:
+			g =[s in answer[i] for i in range(numh)].index(True)
+			if student_rankings[s].index(g) < student_rankings[s].index(h): #g is ranked higher than h
+				#s stays with g
+				hospital_rankings[h].remove(s)
+			else: #s prefers hospital h
+				#s moves to h and is removed from g's list
+				answer[h].append(s)
+				hospital_rankings[h].remove(s)
+				hospital_capacities[h] = hospital_capacities[h]-1
+				answer[g].remove(s)
+				hospital_capacities[g] = hospital_capacities[g]+1
+	return answer
+
